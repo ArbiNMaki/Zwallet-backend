@@ -1,25 +1,15 @@
 const connection = require('../configs/db')
 
 const topup = {
-    getAllTopUp: (date, limit, offset) => {
+    getAllTopUp: (id) => {
     return new Promise((resolve, reject) => {
-      if (date) {
-        connection.query(`SELECT * FROM topup WHERE date LIKE ? LIMIT ${offset}, ${limit}`, `%${date}%  ORDER BY date DESC`, (error, result) => {
+        connection.query(`SELECT * FROM topup ORDER BY id DESC`, id, (error, result) => {
           if (!error) {
             resolve(result)
           } else {
             reject(error)
           }
         })
-      } else {
-        connection.query(`SELECT * FROM topup LIMIT ${limit} OFFSET ${offset}`, (error, result) => {
-          if (!error) {
-            resolve(result)
-          } else {
-            reject(error)
-          }
-        })
-      }
     })
   },
   chargeTopUp: (data) => {
