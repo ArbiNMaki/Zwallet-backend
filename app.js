@@ -1,46 +1,36 @@
+/* eslint-disable no-undef */
 require('dotenv').config()
 const express = require('express')
-const morgan = require('morgan')
 const app = express()
+const morgan = require('morgan')
 const PORT = process.env.PORT
-const cors = require('cors')
-const routerUsers = require('./src/router/users')
-const routerTransfer = require('./src/router/transfer')
-const routerTopup = require('./src/router/topup')
-const bodyParser = require('body-parser')
 const helper = require('./src/helpers/helper')
+const cors = require('cors')
+const routes = require('./src/router/index')
+const bodyParser = require('body-parser')
 
-// use middleware
-
-// cors
-const corsOptions = {
-    origin: 'http://locahost:2020/',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+const mymiddleware = (req, res, next) => {
+  console.log('Menjalankan mymiddleware')
+  next()
 }
 
 app.use(cors())
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
 
-// parse application/json
-app.use(bodyParser.json())
-
-// add morgan
 app.use(morgan('dev'))
 
-// router
-app.use('/users', routerUsers)
-app.use('/transfer', routerTransfer)
-app.use('/topup', routerTopup)
+app.use(mymiddleware)
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
-// error handling
-app.use((err, req, res, next) => {
-  helper.response(res, null, err.status, { message: err.message })
-  // console.log("bla bla bla bla")
-})
-app.use('*', (req, res) => {
-// res.json()
-  helper.response(res, null, 404, { message: 'URL Not Found' })
+app.use('/v1', routes)
+
+app.use('*', (req, res, next) => {
+  const error = new Error('URL Not Found')
+  error.status = 400
+  return next(error)
 })
 
-app.listen(PORT, () => console.log(`server is running port ${PORT}`))
+app.use((err, req, res) => {
+  helper.response(res, err.status = 500, null, { message: err.message })
+})
+app.listen(PORT, () => console.log(`Server running in port ${PORT}`))
