@@ -1,36 +1,34 @@
-/* eslint-disable no-undef */
 require('dotenv').config()
 const express = require('express')
-const app = express()
 const morgan = require('morgan')
-const PORT = process.env.PORT
-const helper = require('./src/helpers/helper')
-const cors = require('cors')
-const routes = require('./src/router/index')
+const app = express()
+const PORT = process.env.DB_PORT
 const bodyParser = require('body-parser')
-
-const mymiddleware = (req, res, next) => {
-  console.log('Menjalankan mymiddleware')
-  next()
-}
-
+const helper = require('./src/helpers/helpers')
+const cors = require('cors')
 app.use(cors())
 
-app.use(morgan('dev'))
+const routerUsers = require('./src/routes/users')
+const routerTransaction = require('./src/routes/transaction')
+const routerPhone = require('./src/routes/managePhone')
+const routerAuth = require('./src/routes/auth')
 
-app.use(mymiddleware)
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(morgan('dev'))
 
-app.use('/v1', routes)
+app.use('/users', routerUsers)
+app.use('/transaction', routerTransaction)
+app.use('/managePhone', routerPhone)
+app.use('/auth', routerAuth)
 
-app.use('*', (req, res, next) => {
-  const error = new Error('URL Not Found')
-  error.status = 400
-  return next(error)
+app.use('/uploads',express.static('./uploads'))
+app.use((err, req, res, next) => {
+  helper.response(err.statusCek, res, null, err.status, err.message)
 })
 
-app.use((err, req, res) => {
-  helper.response(res, err.status = 500, null, { message: err.message })
+app.use('*', (req, res) => {
+  helper.response('error', res, null, 404, 'url not found')
 })
-app.listen(PORT, () => console.log(`Server running in port ${PORT}`))
+
+app.listen(PORT, () => console.log(`server is running port ${PORT}`))
