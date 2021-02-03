@@ -22,7 +22,7 @@ Express.js is a web application framework for Node.js.
 ```npm install```
 3. Make new file a called **.env**, set up first [here](#set-up-env-file)
 4. Turn on Apache and MYSQL Server using xampp, etc.
-5. Create a database then  import file **zwallet.sql** in directory root/database to [phpmyadmin](http://localhost/phpmyadmin)
+5. Create a database then  import file **zwalletku.sql** in directory root/database to [phpmyadmin](http://localhost/phpmyadmin)
 6. Open Postman desktop application or Chrome web app extension that has installed before
 7. Choose HTTP Method and enter request url.
 8. You can see all the end point [here](#end-point)
