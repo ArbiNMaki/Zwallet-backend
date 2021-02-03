@@ -30,17 +30,15 @@ Express.js is a web application framework for Node.js.
 ## Set up .env file
 Open .env file on your favorite code editor, and copy paste this code below :
 ```
-PORT = [YOUR_SERVER_PORT]
-DB_HOST = localhost
-DB_NAME = zwallet
-DB_USER = [YOUR_DB_USER]
-DB_PASSWORD = [YOUR_DB_PASSWORD]
-BASE_URL = http://localhost:[PORT]
-BASE_URL_FRONT_END = [YOUR_URL_ZWALLET_FRONT_END]
-ACCESS_TOKEN = [YOUR_ACCESS_TOKEN_KEY]
-REFRESH_TOKEN = [YOUR_REFRESH_TOKEN_KEY]
-EMAIL_USERNAME = [YOUR_EMAIL_USERNAME]
-EMAIL_PASSWORD = [YOUR_EMAIL_PASSWORD]
+DB_HOST=localhost
+PORT=3000
+DB_DATABASE=revisi_zwallet
+DB_USERNAME=root
+DB_PASSWORD=
+BASE_URL=http://localhost:3000
+SECRET_KEY= xxxxxxxxx
+EMAIL= YOUR_EMAIL
+PW_EMAIL= YOUR_PASSWORD
 ```
 
 ## API Request Example 
